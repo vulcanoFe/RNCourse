@@ -16,7 +16,6 @@ export default function App() {
 
 	function deleteGoalHandler(id) {
 		setCourseGoals(currentCourseGoals => {
-			console.log(currentCourseGoals);
 			return currentCourseGoals.filter((goal) => goal.id !== id)
 		})
 	}
@@ -39,11 +38,11 @@ export default function App() {
 
 const styles = StyleSheet.create({
 	appContainer: {
-		flex: 1,
+		flex: 2,
 		paddingTop: 50,
 		paddingHorizontal: 16
 	},
 	goalsContainer: {
-		flex: 11,
+		flex: 4,
 	}
 });
