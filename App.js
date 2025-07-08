@@ -1,17 +1,28 @@
 import { useState } from 'react';
-import { StyleSheet, View, FlatList } from 'react-native';
+import { StyleSheet, View, FlatList, Button } from 'react-native';
 import GoalItem from './components/GoalItem';
-import GaolInput from './components/GoalInput';
+import GoalInput from './components/GoalInput';
+import { StatusBar } from 'expo-status-bar';
 
 export default function App() {
 
 	const [courseGoals, setCourseGoals] = useState([]);
+	const [modalIsVisible, setModalIsVisible] = useState(false);
+
+	function startAddGoalHandler() {
+		setModalIsVisible(true);
+	}
+
+	function endAddGoalHandler() {
+		setModalIsVisible(false);
+	}
 
 	function addGoalHandler(enteredGoalText) {
 		setCourseGoals(currentCourseGoals => [
 			...currentCourseGoals,
 			{ text: enteredGoalText, id: Math.random().toString() }
 		]);
+		endAddGoalHandler();
 	}
 
 	function deleteGoalHandler(id) {
@@ -21,28 +32,32 @@ export default function App() {
 	}
 
 	return (
-		<View style={styles.appContainer}>
-			<GaolInput onAddGoal={addGoalHandler} />
-			<View style={styles.goalsContainer}>
-				<FlatList data={courseGoals} alwaysBounceVertical={false}
-					renderItem={itemData => {
-						return (
-							<GoalItem text={itemData.item.text} id={itemData.item.id} onDeleteItem={deleteGoalHandler} />
-						);
-					}}
-					keyExtractor={(item, index) => { return item.id }} />
+		<>
+			<StatusBar style="light" />
+			<View style={styles.appContainer}>
+				<Button title="Add New Goal" color="#b180f0" onPress={startAddGoalHandler} />
+				<GoalInput visible={modalIsVisible} onAddGoal={addGoalHandler} onCancel={endAddGoalHandler} />
+				<View style={styles.goalsContainer}>
+					<FlatList data={courseGoals} alwaysBounceVertical={false}
+						renderItem={itemData => {
+							return (
+								<GoalItem text={itemData.item.text} id={itemData.item.id} onDeleteItem={deleteGoalHandler} />
+							);
+						}}
+						keyExtractor={(item, index) => { return item.id }} />
+				</View>
 			</View>
-		</View>
+		</>
 	);
 }
 
 const styles = StyleSheet.create({
 	appContainer: {
-		flex: 2,
+		flex: 1,
 		paddingTop: 50,
 		paddingHorizontal: 16
 	},
 	goalsContainer: {
-		flex: 4,
+		flex: 5,
 	}
 });

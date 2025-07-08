@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { StyleSheet, View, TextInput, Button } from "react-native";
+import { StyleSheet, View, TextInput, Button, Modal, Image } from "react-native";
 
-function GaolInput(props) {
+function GoalInput(props) {
 
 	const [enteredGoalText, setEnteredGoalText] = useState('');
 
@@ -15,31 +15,59 @@ function GaolInput(props) {
 	}
 
 	return (
-		<View style={styles.inputContainer}>
-			<TextInput placeholder='Your course goal!' onChangeText={goalInputHandler} style={styles.textInput} value={enteredGoalText} />
-			<Button title='Add Goal' onPress={addGoalHandler} />
-		</View>
+		<Modal visible={props.visible} animationType="slide">
+			<View style={styles.inputContainer}>
+				<Image style={styles.image} source={require('../assets/images/goal.png')} />
+				<TextInput
+					placeholder='Your course goal!'
+					onChangeText={goalInputHandler}
+					style={styles.textInput}
+					value={enteredGoalText}
+				/>
+				<View style={styles.buttonContainer}>
+					<View style={styles.button}>
+						<Button title='Cancel' color='#f31282' onPress={props.onCancel} />
+					</View>
+					<View style={styles.button}>
+						<Button title='Add Goal' color='#b180f0' onPress={addGoalHandler} />
+					</View>
+				</View>
+			</View>
+		</Modal>
 	);
 
 }
 
-export default GaolInput;
+export default GoalInput;
 
 const styles = StyleSheet.create({
 	inputContainer: {
 		flex: 1,
-		flexDirection: 'row',
-		justifyContent: 'space-between',
+		justifyContent: 'center',
 		alignItems: 'center',
-		marginBottom: 24,
-		borderBottomWidth: 1,
-		borderBottomColor: '#cccccc',
+		padding: 16,
+		backgroundColor: "#311b6b"
+	},
+	image: {
+		height: 100,
+		width: 100,
+		maargin: 20
 	},
 	textInput: {
 		borderWidth: 1,
-		borderColor: '#cccccc',
-		width: '70%',
-		marginRight: 8,
-		padding: 8
+		borderColor: '#e4d0ff',
+		backgroundColor: '#e4d0ff',
+		color: '#120438',
+		borderRadius: 6,
+		width: '100%',
+		padding: 16
+	},
+	buttonContainer: {
+		flexDirection: 'row',
+		marginTop: 16
+	},
+	button: {
+		width: 100,
+		marginHorizontal: 8
 	}
 });
